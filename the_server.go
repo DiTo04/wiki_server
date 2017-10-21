@@ -16,10 +16,15 @@ var validPath = regexp.MustCompile("^/(edit|save|view)/([a-zA-Z0-9_]+)$")
 func main() {
 	fs := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	http.HandleFunc("/", redirectToHomePage)
 	http.HandleFunc("/view/", makeHandler(viewHandler))
 	http.HandleFunc("/edit/", makeHandler(editHandler))
 	http.HandleFunc("/save/", makeHandler(saveHandler))
 	http.ListenAndServe(":8080",nil)
+}
+
+func redirectToHomePage(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "/view/Home_Page", http.StatusFound)
 }
 
 func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.HandlerFunc  {
