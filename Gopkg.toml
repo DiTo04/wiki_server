@@ -24,3 +24,8 @@
 [[constraint]]
   name = "github.com/golang/mock"
   version = "1.0.0"
+
+[metadata.heroku]
+    root-package="github.com/DiTo04/wiki_server"
+    go-version = "1.9.1"
+    install="./..."
