@@ -11,7 +11,7 @@ import (
 )
 
 var templates = template.Must(template.ParseFiles("templates/edit.html", "templates/view.html"))
-var validPath = regexp.MustCompile("^/(edit|save|view)/([a-zA-Z0-9]+)$")
+var validPath = regexp.MustCompile("^/(edit|save|view)/([a-zA-Z0-9_]+)$")
 
 func main() {
 	fs := http.FileServer(http.Dir("static"))
@@ -37,6 +37,7 @@ func viewHandler(w http.ResponseWriter, r *http.Request, title string) {
 	p, err := loadPage(title)
 	if err != nil {
 		http.Redirect(w, r, "/edit/" + title, http.StatusFound)
+		return
 	}
 	renderTemplate(w, p, "view")
 }

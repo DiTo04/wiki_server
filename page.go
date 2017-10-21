@@ -1,6 +1,9 @@
 package main
 
-import "io/ioutil"
+import (
+	"io/ioutil"
+	"strings"
+)
 
 type Page struct {
 	Title string
@@ -19,4 +22,8 @@ func loadPage(title string) (*Page, error) {
 		return nil, err
 	}
 	return &Page{Title: title, Body: body}, nil
+}
+
+func (p *Page) PrittyTitle() string {
+	return strings.Replace(p.Title, "_", " ", -1)
 }
