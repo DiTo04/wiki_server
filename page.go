@@ -7,7 +7,7 @@ import (
 
 type Page struct {
 	Title string
-	Body []byte
+	Body  []byte
 }
 
 func (p *Page) save() error {
@@ -17,7 +17,7 @@ func (p *Page) save() error {
 
 func loadPage(title string) (*Page, error) {
 	filename := "pages/" + title + ".txt"
-	body, err:= ioutil.ReadFile(filename)
+	body, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return nil, err
 	}

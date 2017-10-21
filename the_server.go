@@ -5,8 +5,8 @@
 package main
 
 import (
-	"net/http"
 	"html/template"
+	"net/http"
 	"regexp"
 )
 
@@ -20,14 +20,14 @@ func main() {
 	http.HandleFunc("/view/", makeHandler(viewHandler))
 	http.HandleFunc("/edit/", makeHandler(editHandler))
 	http.HandleFunc("/save/", makeHandler(saveHandler))
-	http.ListenAndServe(":8080",nil)
+	http.ListenAndServe(":8080", nil)
 }
 
 func redirectToHomePage(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/view/Home_Page", http.StatusFound)
 }
 
-func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.HandlerFunc  {
+func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		m := validPath.FindStringSubmatch(request.URL.Path)
 		if m == nil {
@@ -41,7 +41,7 @@ func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.Handl
 func viewHandler(w http.ResponseWriter, r *http.Request, title string) {
 	p, err := loadPage(title)
 	if err != nil {
-		http.Redirect(w, r, "/edit/" + title, http.StatusFound)
+		http.Redirect(w, r, "/edit/"+title, http.StatusFound)
 		return
 	}
 	renderTemplate(w, p, "view")
@@ -50,7 +50,7 @@ func viewHandler(w http.ResponseWriter, r *http.Request, title string) {
 func editHandler(writer http.ResponseWriter, request *http.Request, title string) {
 	p, err := loadPage(title)
 	if err != nil {
-		p = &Page{Title:title}
+		p = &Page{Title: title}
 	}
 	renderTemplate(writer, p, "edit")
 }
@@ -63,13 +63,12 @@ func saveHandler(writer http.ResponseWriter, request *http.Request, title string
 		http.Error(writer, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	http.Redirect(writer, request, "/view/" + title, http.StatusFound)
+	http.Redirect(writer, request, "/view/"+title, http.StatusFound)
 }
 
 func renderTemplate(w http.ResponseWriter, p *Page, template string) {
-	err := templates.ExecuteTemplate(w, template + ".html", p)
+	err := templates.ExecuteTemplate(w, template+".html", p)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
-
