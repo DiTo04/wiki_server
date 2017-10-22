@@ -2,4 +2,8 @@ language: go
 go:
   -master
 
+branches:
+  only:
+  - master
+
 before_script: mkdir pages
